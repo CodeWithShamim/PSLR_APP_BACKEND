@@ -33,6 +33,7 @@ const userSchema = mongoose.Schema(
         },
 
         // === optional ===
+        pin: Number,
         bio: String,
         description: String,
         profilePicture: {
@@ -59,7 +60,6 @@ userSchema.methods.comparePassword = function (password, hash) {
     const isPasswordValid = bcrypt.compareSync(password, hash);
     return isPasswordValid;
 };
-
 
 const User = mongoose.model("User", userSchema);
 

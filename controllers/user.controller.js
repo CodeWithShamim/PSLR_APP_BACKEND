@@ -1,5 +1,6 @@
-const { signupService, findUserByEmail } = require("../services/user.service");
+const { signupService, findUserByEmail, updatePasswordByEmail, addPinByEmail, removePinByEmail } = require("../services/user.service");
 const { sendMailWithGmail } = require("../utils/emailSender");
+const bcrypt = require("bcryptjs");
 
 // sign up controller 
 module.exports.signup = async (req, res) => {
@@ -70,8 +71,8 @@ module.exports.login = async (req, res) => {
 };
 
 
-// reset password controller
-module.exports.forgetPassword = async (req, res) => {
+// forgot password controller
+module.exports.forgotPassword = async (req, res) => {
     try {
         const { email } = req.body;
 
@@ -108,9 +109,60 @@ module.exports.forgetPassword = async (req, res) => {
             });
         }
 
+        // add pin in db 
+        await addPinByEmail({ email: user.email, pin })
+
         res.status(200).json({
             success: true,
-            pin,
+            message: "Successfully verify code send."
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error,
+        });
+    }
+};
+
+
+// update password controller
+module.exports.updatePassword = async (req, res) => {
+    try {
+        const { email, newPassword, verifyPin } = req.body;
+
+        if (!email || !newPassword || !verifyPin) {
+            return res.status(401).json({
+                success: false,
+                error: "Data is missing.",
+            });
+        }
+        const user = await findUserByEmail(email);
+
+        if (!user) {
+            return res.status(401).json({
+                success: false,
+                error: "user is missing.",
+            });
+        }
+
+        const isPinMaching = user.pin === verifyPin
+
+        // check pin matching... 
+        if (!isPinMaching) {
+            return res.status(401).json({
+                success: false,
+                error: "Your submited pin is wrong. Or, try again.",
+            });
+        };
+
+        const hashPassword = bcrypt.hashSync(newPassword);
+        const result = await updatePasswordByEmail({ email, hashPassword });
+        // remove pin from db 
+        await removePinByEmail({ email })
+
+        res.status(200).json({
+            success: true,
+            data: result
         });
     } catch (error) {
         res.status(500).json({
