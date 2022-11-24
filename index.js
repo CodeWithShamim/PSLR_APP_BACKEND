@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 require("dotenv").config();
 const cors = require("cors");
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 const colors = require("colors");
 const database = require("./utils/database");
 const userRoute = require("./routes/v1/user.route");
