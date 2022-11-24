@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const bcrypt = require("bcryptjs");
 
 const userSchema = mongoose.Schema(
     {
@@ -40,6 +41,25 @@ const userSchema = mongoose.Schema(
         },
 
     }, { timestamps: true, });
+
+// create hash password before saving 
+userSchema.pre("save", function (next) {
+    if (!this.isModified("password")) {
+        //  only run if password is modified, otherwise it will change every time we save the user!
+        return next();
+    }
+    const password = this.password;
+    const hashedPassword = bcrypt.hashSync(password);
+    this.password = hashedPassword;
+    next();
+});
+
+// check password vaildation 
+userSchema.methods.comparePassword = function (password, hash) {
+    const isPasswordValid = bcrypt.compareSync(password, hash);
+    return isPasswordValid;
+};
+
 
 const User = mongoose.model("User", userSchema);
 
