@@ -17,7 +17,7 @@ const userSchema = mongoose.Schema(
             validate: [validator.isEmail, "Provide a valid Email"],
             trim: true,
             lowercase: true,
-            unique: true,
+            unique: [true, "Email already use."],
         },
         country: {
             type: String,
@@ -33,14 +33,36 @@ const userSchema = mongoose.Schema(
         },
 
         // === optional ===
-        pin: Number,
-        role: String,
+        role: {
+            type: String,
+            enum: ["user", "admin"],
+            default: "user"
+        },
         bio: String,
         description: String,
         profilePicture: {
             type: String,
-            validate: [validator.isURL, "Please provide a valid url"],
+            validate: [validator.isURL, "Please provide a valid img url"],
         },
+        fbURL: {
+            type: String,
+            validate: [validator.isURL, "Please provide a valid facebook url"],
+        },
+        instagramURL: {
+            type: String,
+            validate: [validator.isURL, "Please provide a valid instagram url"],
+        },
+        twitterURL: {
+            type: String,
+            validate: [validator.isURL, "Please provide a valid twitter url"],
+        },
+        twitchURL: {
+            type: String,
+            validate: [validator.isURL, "Please provide a valid twitch url"],
+        },
+
+        // for reset password 
+        pin: Number,
 
     }, { timestamps: true, });
 

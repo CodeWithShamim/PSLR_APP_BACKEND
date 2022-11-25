@@ -1,4 +1,4 @@
-const { signupService, findUserByEmail, updatePasswordByEmail, addPinByEmail, removePinByEmail } = require("../services/user.service");
+const { signupService, findUserByEmail, updatePasswordByEmail, addPinByEmail, removePinByEmail, updateProfileService } = require("../services/user.service");
 const { sendMailWithGmail } = require("../utils/emailSender");
 const bcrypt = require("bcryptjs");
 const { generateToken } = require("../utils/token");
@@ -71,6 +71,32 @@ module.exports.login = async (req, res) => {
         res.status(500).json({
             success: false,
             error,
+        });
+    }
+};
+
+// update profile controller 
+module.exports.updateProfile = async (req, res) => {
+    try {
+        const updateInfo = req.body;
+        const result = await updateProfileService(updateInfo);
+
+        if (result?.modifiedCount) {
+            const user = await findUserByEmail(updateInfo.email);
+            // remove password form user data 
+            const { password: pwd, ...others } = user.toObject();
+
+            res.status(200).json({
+                success: true,
+                message: "Successfully update your profile data.",
+                user: others,
+            });
+        }
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: error.message,
         });
     }
 };
