@@ -51,7 +51,7 @@ module.exports.login = async (req, res) => {
         if (!isPasswordValid) {
             return res.status(403).json({
                 success: false,
-                error: "Password is not correct",
+                error: "Email or password is wrong.",
             });
         }
 
@@ -82,7 +82,7 @@ module.exports.getMe = async (req, res) => {
 
         // password retrive form user data 
         const { password: pwd, ...others } = user.toObject();
-        
+
         res.status(200).json({
             success: true,
             user: others,

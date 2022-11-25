@@ -6,6 +6,7 @@ const port = process.env.PORT || 3000;
 const colors = require("colors");
 const database = require("./utils/database");
 const userRoute = require("./routes/v1/user.route");
+const productRoute = require("./routes/v1/product.route");
 
 // middlewares 
 app.use(express.json());
@@ -18,6 +19,7 @@ app.get("/", (req, res) => {
 
 // route
 app.use("/api/v1/user", userRoute);
+app.use("/api/v1/product", productRoute);
 
 // server
 app.listen(port, () => {
