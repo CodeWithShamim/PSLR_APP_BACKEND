@@ -34,6 +34,7 @@ const userSchema = mongoose.Schema(
 
         // === optional ===
         pin: Number,
+        role: String,
         bio: String,
         description: String,
         profilePicture: {

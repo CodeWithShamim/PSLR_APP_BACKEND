@@ -1,6 +1,7 @@
 const { signupService, findUserByEmail, updatePasswordByEmail, addPinByEmail, removePinByEmail } = require("../services/user.service");
 const { sendMailWithGmail } = require("../utils/emailSender");
 const bcrypt = require("bcryptjs");
+const { generateToken } = require("../utils/token");
 
 // sign up controller 
 module.exports.signup = async (req, res) => {
@@ -54,18 +55,42 @@ module.exports.login = async (req, res) => {
             });
         }
 
-        // remove password form user data 
+        // generate token 
+        const token = generateToken({ email: user.email, role: user.role || "user" })
+
+        // password retrive form user data 
         const { password: pwd, ...others } = user.toObject();
 
         res.status(200).json({
             status: "success",
             message: "Successfully logged in",
             user: others,
+            token,
         });
     } catch (error) {
         res.status(500).json({
             success: false,
             error,
+        });
+    }
+};
+
+// get me controller 
+module.exports.getMe = async (req, res) => {
+    try {
+        const user = await findUserByEmail(req.user?.email);
+
+        // password retrive form user data 
+        const { password: pwd, ...others } = user.toObject();
+        
+        res.status(200).json({
+            success: true,
+            user: others,
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: error.message,
         });
     }
 };
@@ -114,7 +139,7 @@ module.exports.forgotPassword = async (req, res) => {
 
         res.status(200).json({
             success: true,
-            message: "Successfully verify code send."
+            message: "Successfully verify code send. Check your email address"
         });
     } catch (error) {
         res.status(500).json({
@@ -151,7 +176,7 @@ module.exports.updatePassword = async (req, res) => {
         if (!isPinMaching) {
             return res.status(401).json({
                 success: false,
-                error: "Your submited pin is wrong. Or, try again.",
+                error: "Your submited pin is wrong. Or, try again later.",
             });
         };
 
