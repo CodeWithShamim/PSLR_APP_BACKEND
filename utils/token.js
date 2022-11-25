@@ -1,15 +1,20 @@
 const jwt = require("jsonwebtoken");
+const { promisify } = require("util");
 
 
-module.exports.generateToken = (userInfo) => {
-  const payload = {
-    email: userInfo.email,
-    role: userInfo.role,
-  };
+module.exports.generateToken = async (userInfo) => {
+    try {
+        const payload = {
+            email: userInfo.email,
+            role: userInfo.role,
+        };
 
-  const token = jwt.sign(payload, process.env.TOKEN_SECRET, {
-    expiresIn: "7d"
-  });
-
-  return token;
+        const token = await promisify(jwt.sign)(payload, process.env.TOKEN_SECRET, { expiresIn: "7d" });
+        return token;
+    } catch (error) {
+        res.status(403).json({
+            success: false,
+            error: error.message
+        });
+    }
 };

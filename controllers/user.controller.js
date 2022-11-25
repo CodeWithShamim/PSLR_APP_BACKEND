@@ -56,7 +56,7 @@ module.exports.login = async (req, res) => {
         }
 
         // generate token 
-        const token = generateToken({ email: user.email, role: user.role || "user" })
+        const token = await generateToken({ email: user.email, role: user.role || "user" })
 
         // password retrive form user data 
         const { password: pwd, ...others } = user.toObject();
