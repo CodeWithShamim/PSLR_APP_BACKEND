@@ -7,13 +7,22 @@ const { generateToken } = require("../utils/token");
 module.exports.signup = async (req, res) => {
     try {
         const userData = req.body;
+        // check user if exit 
+        const isUser = await findUserByEmail(userData.email);
+        if (isUser) {
+            return res.status(401).json({
+                success: false,
+                error: "This user already exit.",
+            });
+        }
+
         const user = await signupService(userData);
         // remove password form user data 
         const { password: pwd, ...others } = user.toObject();
 
         res.status(200).json({
             success: true,
-            message: "Successfully signed up",
+            message: "Congratulations!. your account successfully created.",
             user: others
         });
 
@@ -56,7 +65,7 @@ module.exports.login = async (req, res) => {
         }
 
         // generate token 
-        const token = await generateToken({ email: user.email, role: user.role || "user" })
+        const token = await generateToken({ email: user?.email, role: user?.role || "user" })
 
         // password retrive form user data 
         const { password: pwd, ...others } = user.toObject();
@@ -70,7 +79,7 @@ module.exports.login = async (req, res) => {
     } catch (error) {
         res.status(500).json({
             success: false,
-            error,
+            error: error.message,
         });
     }
 };
@@ -92,6 +101,11 @@ module.exports.updateProfile = async (req, res) => {
                 user: others,
             });
         }
+
+        res.status(401).json({
+            success: false,
+            error: "Can't update your profile data.",
+        });
 
     } catch (error) {
         res.status(500).json({
@@ -170,7 +184,7 @@ module.exports.forgotPassword = async (req, res) => {
     } catch (error) {
         res.status(500).json({
             success: false,
-            error,
+            error: error.message,
         });
     }
 };
@@ -218,7 +232,7 @@ module.exports.updatePassword = async (req, res) => {
     } catch (error) {
         res.status(500).json({
             success: false,
-            error,
+            error: error.message,
         });
     }
 };
