@@ -3,6 +3,7 @@ const { sendMailWithGmail } = require("../utils/emailSender");
 const bcrypt = require("bcryptjs");
 const { generateToken } = require("../utils/token");
 const validator = require("validator");
+const uploader = require("../utils/uploader");
 
 // sign up controller 
 module.exports.signup = async (req, res) => {
@@ -105,8 +106,34 @@ module.exports.login = async (req, res) => {
 module.exports.updateProfile = async (req, res) => {
     try {
         const updateInfo = req.body;
-        const user = await updateProfileService(updateInfo);
 
+        // check valid url 
+        // if (!validator.isURL(updateInfo.fbURL)) {
+        //     return res.status(401).json({
+        //         success: false,
+        //         error: "Please provide a valid fb url.",
+        //     });
+        // }
+
+
+        //=============== upload image in aws s3 ===============
+        const singleUploader = uploader().single("image-upload")
+        singleUploader(req, res, (err) => {
+            if (err) {
+                return res.status(401).json({
+                    success: false,
+                    error: err.message
+                })
+            }
+            console.log("uppp", req.file);
+            res.status(200).json({
+                success: true,
+                data: req.file
+            })
+
+        })
+
+        const user = await updateProfileService(updateInfo);
         if (user?._id) {
             // remove password form user data 
             const { password: pwd, ...others } = user.toObject();

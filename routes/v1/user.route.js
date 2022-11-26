@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post("/signup", userController.signup);
 router.post("/login", userController.login);
-router.post("/updateProfile", userController.updateProfile);
+router.post("/updateProfile", verifyToken, userController.updateProfile);
 
 router.get("/getMe", verifyToken, userController.getMe);
 

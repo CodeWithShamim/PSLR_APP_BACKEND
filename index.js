@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 require("dotenv").config();
 const cors = require("cors");
+const bodyParser = require('body-parser');
 const port = process.env.PORT || 3000;
 const colors = require("colors");
 const database = require("./utils/database");
@@ -12,6 +13,17 @@ const errorHandler = require("./middleware/errorHandler");
 // middlewares 
 app.use(express.json());
 app.use(cors());
+app.use(
+    bodyParser.json({
+        limit: '50mb'
+    })
+)
+app.use(
+    bodyParser.urlencoded({
+        limit: '50mb',
+        extended: true
+    })
+)
 database();
 
 app.get("/", (req, res) => {
