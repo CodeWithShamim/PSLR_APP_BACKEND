@@ -2,11 +2,21 @@ const { signupService, findUserByEmail, updatePasswordByEmail, addPinByEmail, re
 const { sendMailWithGmail } = require("../utils/emailSender");
 const bcrypt = require("bcryptjs");
 const { generateToken } = require("../utils/token");
+const validator = require("validator");
 
 // sign up controller 
 module.exports.signup = async (req, res) => {
     try {
         const userData = req.body;
+
+        // check email valid 
+        if (!validator.isEmail(userData.email)) {
+            return res.status(401).json({
+                success: false,
+                error: "Please provide a valid Email.",
+            });
+        };
+
         // check user if exit 
         const isUser = await findUserByEmail(userData.email);
         if (isUser) {
@@ -14,7 +24,7 @@ module.exports.signup = async (req, res) => {
                 success: false,
                 error: "This user already exit.",
             });
-        }
+        };
 
         const user = await signupService(userData);
         // remove password form user data 
@@ -38,6 +48,13 @@ module.exports.signup = async (req, res) => {
 module.exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
+
+        if (!validator.isEmail(email)) {
+            return res.status(401).json({
+                success: false,
+                error: "Please provide a valid Email.",
+            });
+        };
 
         if (!email || !password) {
             return res.status(401).json({
@@ -88,10 +105,9 @@ module.exports.login = async (req, res) => {
 module.exports.updateProfile = async (req, res) => {
     try {
         const updateInfo = req.body;
-        const result = await updateProfileService(updateInfo);
+        const user = await updateProfileService(updateInfo);
 
-        if (result?.modifiedCount) {
-            const user = await findUserByEmail(updateInfo.email);
+        if (user?._id) {
             // remove password form user data 
             const { password: pwd, ...others } = user.toObject();
 

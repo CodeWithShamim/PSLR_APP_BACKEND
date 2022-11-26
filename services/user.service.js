@@ -14,7 +14,7 @@ module.exports.findUserByEmail = async (email) => {
 module.exports.updateProfileService = async (updateInfo) => {
   const { bio, description, profilePicture, fbURL, instagramURL, twitterURL, twitchURL } = updateInfo;
 
-  const result = await User.updateOne({ email: updateInfo?.email}, {
+  const result = await User.findOneAndUpdate({ email: updateInfo?.email}, {
     $set: {
       bio,
       description,
@@ -25,6 +25,7 @@ module.exports.updateProfileService = async (updateInfo) => {
       twitchURL,
     }
   });
+  console.log(result);
   return result;
 };
 
