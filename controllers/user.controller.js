@@ -100,12 +100,12 @@ module.exports.updateProfile = async (req, res) => {
                 message: "Successfully update your profile data.",
                 user: others,
             });
+        } else {
+            res.status(401).json({
+                success: false,
+                error: "Can't update your profile data.",
+            });
         }
-
-        res.status(401).json({
-            success: false,
-            error: "Can't update your profile data.",
-        });
 
     } catch (error) {
         res.status(500).json({
