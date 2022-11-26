@@ -102,20 +102,9 @@ module.exports.login = async (req, res) => {
     }
 };
 
-// update profile controller 
-module.exports.updateProfile = async (req, res) => {
+// upload image controller 
+module.exports.uploadImage = async (req, res) => {
     try {
-        const updateInfo = req.body;
-
-        // check valid url 
-        // if (!validator.isURL(updateInfo.fbURL)) {
-        //     return res.status(401).json({
-        //         success: false,
-        //         error: "Please provide a valid fb url.",
-        //     });
-        // }
-
-
         //=============== upload image in aws s3 ===============
         const singleUploader = uploader().single("image-upload")
         singleUploader(req, res, (err) => {
@@ -125,16 +114,39 @@ module.exports.updateProfile = async (req, res) => {
                     error: err.message
                 })
             }
-            console.log("uppp", req.file);
             res.status(200).json({
                 success: true,
-                data: req.file
+                url: req.file?.location
             })
-
         })
 
-        const user = await updateProfileService(updateInfo);
-        if (user?._id) {
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: error.message,
+        });
+    }
+};
+
+// update profile controller 
+module.exports.updateProfile = async (req, res) => {
+    try {
+        const updateInfo = req.body;
+
+        console.log(updateInfo)
+
+        // check valid url 
+        // if (!validator.isURL(updateInfo.fbURL)) {
+        //     return res.status(401).json({
+        //         success: false,
+        //         error: "Please provide a valid fb url.",
+        //     });
+        // }
+
+        const result = await updateProfileService(updateInfo);
+
+        if (result.modifiedCount) {
+            const user = await findUserByEmail(updateInfo.email);
             // remove password form user data 
             const { password: pwd, ...others } = user.toObject();
 
