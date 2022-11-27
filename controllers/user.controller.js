@@ -133,8 +133,6 @@ module.exports.updateProfile = async (req, res) => {
     try {
         const updateInfo = req.body;
 
-        console.log(updateInfo)
-
         // check valid url 
         // if (!validator.isURL(updateInfo.fbURL)) {
         //     return res.status(401).json({

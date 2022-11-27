@@ -30,11 +30,11 @@ const productSchema = mongoose.Schema(
             type: String,
             required: [true, "Location is required."]
         },
-        // images: [{
-        //     type: String,
-        //     required: [true, "Product images is required."],
-        //     validate: [validator.isURL, "Please provide a valid img url"],
-        // }],
+        images: [{
+            type: String,
+            required: [true, "Product images is required."],
+            validate: [validator.isURL, "Please provide a valid img url"],
+        }],
         status: {
             type: String,
             enum: ["pending", "active"],
