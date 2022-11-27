@@ -6,12 +6,10 @@ module.exports.addProduct = async (req, res) => {
         const productData = req.body;
         const result = await addProductService(productData);
 
-        console.log("product", result);
-
         res.status(200).json({
             success: true,
             message: "Successfully product added",
-            product: {}
+            product: result,
         });
 
     } catch (error) {
