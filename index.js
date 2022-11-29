@@ -8,6 +8,7 @@ const colors = require("colors");
 const database = require("./utils/database");
 const userRoute = require("./routes/v1/user.route");
 const productRoute = require("./routes/v1/product.route");
+const productLinkRoute = require("./routes/v1/productLink.route");
 const errorHandler = require("./middleware/errorHandler");
 
 // middlewares 
@@ -28,6 +29,7 @@ app.get("/", (req, res) => {
 // route
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/product", productRoute);
+app.use("/api/v1/wishlist", productLinkRoute);
 
 // server
 app.listen(port, () => {
