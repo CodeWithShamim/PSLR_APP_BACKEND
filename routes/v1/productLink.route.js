@@ -5,5 +5,6 @@ const verifyToken = require("../../middleware/verifyToken");
 
 router.get("/", verifyToken, productLinkController.getAllProductLinks);
 router.post("/addToWishList", verifyToken, productLinkController.addProductLink);
+router.delete("/:id", verifyToken, productLinkController.removeProductLink);
 
 module.exports = router;
