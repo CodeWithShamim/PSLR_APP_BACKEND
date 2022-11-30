@@ -11,9 +11,12 @@ const productLinkSchema = mongoose.Schema(
             type: String,
             required: [true, "Product url is required."],
             validate: [validator.isURL, "Not a valid url!"],
-            unique: [true, "This product is already in wishlist!"],
         },
-
+        createdAt: {
+            type: Date,
+            default: Date.now(),
+            select: false,
+          },
     });
 
 const ProductLink = mongoose.model("ProductLink", productLinkSchema);

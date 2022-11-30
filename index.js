@@ -10,6 +10,7 @@ const userRoute = require("./routes/v1/user.route");
 const productRoute = require("./routes/v1/product.route");
 const productLinkRoute = require("./routes/v1/productLink.route");
 const errorHandler = require("./middleware/errorHandler");
+const errorController = require("./controllers/error.controller");
 
 // middlewares 
 app.use(express.json());
@@ -38,6 +39,7 @@ app.listen(port, () => {
 
 // globaly error handler 
 app.use(errorHandler);
+app.use(errorController);
 
 process.on("unhandledRejection", (error) => {
     console.log("Global error, ", error.name, error.message);
