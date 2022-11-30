@@ -50,7 +50,9 @@ module.exports.removeProductLink = catchAsync(async (req, res, next) => {
 module.exports.getAllProductLinks = catchAsync(async (req, res) => {
 
   try {
-    const wishlist = await ProductLink.find();
+    const userEmail = req.query.email;
+    const wishlist = await ProductLink.find({ refByEmail: userEmail });
+
     res.status(200).json({
       success: true,
       wishlist,

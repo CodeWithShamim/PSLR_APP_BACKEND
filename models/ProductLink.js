@@ -12,6 +12,10 @@ const productLinkSchema = mongoose.Schema(
             required: [true, "Product url is required."],
             validate: [validator.isURL, "Not a valid url!"],
         },
+        refByEmail: {
+            type: String,
+            required: [true, "User email is required!"],
+        },
         createdAt: {
             type: Date,
             default: Date.now(),
