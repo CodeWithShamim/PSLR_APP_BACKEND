@@ -38,7 +38,7 @@ app.listen(port, () => {
 });
 
 // globaly error handler 
-app.use(errorHandler);
+// app.use(errorHandler);
 app.use(errorController);
 
 process.on("unhandledRejection", (error) => {
