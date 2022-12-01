@@ -15,6 +15,7 @@ const productLinkSchema = mongoose.Schema(
         refByEmail: {
             type: String,
             required: [true, "User email is required!"],
+            select: false,
         },
         createdAt: {
             type: Date,
