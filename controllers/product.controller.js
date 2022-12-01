@@ -1,5 +1,24 @@
-const { addProductService } = require("../services/product.service");
+const { addProductService, getProductsService } = require("../services/product.service");
 const uploader = require("../utils/uploader");
+const AppError = require("../utils/appError");
+const catchAsync = require("../utils/catchAsync");
+
+// get all products controller
+module.exports.getProducts = catchAsync(async (req, res, next) => {
+    const skip = req.query.skip;
+    const products = await getProductsService(skip);
+
+    if (!products) {
+        return next(new AppError("Can't find any product", 404));
+    }
+
+    res.status(201).json({
+        success: true,
+        message: "All products successfully find",
+        products,
+    });
+});
+
 
 // upload product image controller 
 module.exports.uploadProductImage = async (req, res) => {
@@ -18,7 +37,7 @@ module.exports.uploadProductImage = async (req, res) => {
             req.files?.forEach((file) => {
                 images.push(file.location)
             })
-            
+
             res.status(200).json({
                 success: true,
                 images,
