@@ -5,8 +5,8 @@ const catchAsync = require("../utils/catchAsync");
 
 // get all products controller
 module.exports.getProducts = catchAsync(async (req, res, next) => {
-    const skip = req.query.skip;
-    const products = await getProductsService(skip);
+    const {skip, searchText} = req.query;
+    const products = await getProductsService(skip, searchText);
 
     if (!products) {
         return next(new AppError("Can't find any product", 404));
