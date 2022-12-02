@@ -24,6 +24,9 @@ module.exports.updateProfileService = async (updateInfo) => {
       twitterURL,
       twitchURL,
     }
+  }, {
+    runValidators: false,
+    new: true,
   });
   return result;
 };
