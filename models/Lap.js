@@ -6,23 +6,24 @@ const lapSchema = mongoose.Schema({
         type: String,
         required: [true, "Sim info is required."],
     },
-    track: {
+    car: {
         type: String,
-        required: [true, "Track info is required."]
+        required: [true, "Car info is required."]
+    },
+    trackName: {
+        type: String,
+        required: [true, "Track name is required."]
     },
     setup: {
         type: String,
         required: [true, "Setup info is required."]
     },
-    car: {
-        type: String,
-        required: [true, "Car info is required."]
-    },
+
     link: {
         type: String,
         validate: [validator.isURL, "Please provide a valid link."],
     },
-    videoURL: {
+    video: {
         type: String,
         validate: [validator.isURL, "Please provide a valid video url."]
     }

@@ -7,10 +7,15 @@ const reportSchema = mongoose.Schema(
             type: ObjectId,
             ref: "Product"
         },
-        reportType: {
+        reason: {
             type: String,
-            required: [true, "Report type is required."],
+            required: [true, "Report reason is required."],
         },
+        status: {
+            type: String,
+            enum: ["submitted", "resolved"],
+            default: "submitted"
+        }
     }, { timestamps: true });
 
 const Report = mongoose.model("Report", reportSchema);
