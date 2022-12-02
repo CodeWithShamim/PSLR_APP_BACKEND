@@ -9,6 +9,7 @@ const database = require("./utils/database");
 const userRoute = require("./routes/v1/user.route");
 const productRoute = require("./routes/v1/product.route");
 const productLinkRoute = require("./routes/v1/productLink.route");
+const lapRoute = require("./routes/v1/lap.route");
 const errorHandler = require("./middleware/errorHandler");
 const errorController = require("./controllers/error.controller");
 
@@ -31,6 +32,7 @@ app.get("/", (req, res) => {
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/product", productRoute);
 app.use("/api/v1/wishlist", productLinkRoute);
+app.use("/api/v1/lap", lapRoute);
 
 // server
 app.listen(port, () => {
