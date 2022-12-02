@@ -4,10 +4,10 @@ const bcrypt = require("bcryptjs");
 const { generateToken } = require("../utils/token");
 const validator = require("validator");
 const uploader = require("../utils/uploader");
+const catchAsync = require("../utils/catchAsync");
 
 // sign up controller 
-module.exports.signup = async (req, res) => {
-    try {
+module.exports.signup = catchAsync(async (req, res) => {
         const userData = req.body;
 
         // check email valid 
@@ -36,14 +36,7 @@ module.exports.signup = async (req, res) => {
             message: "Congratulations!. your account successfully created.",
             user: others
         });
-
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            error: error.message,
-        });
-    }
-};
+})
 
 // login controller 
 module.exports.login = async (req, res) => {
