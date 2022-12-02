@@ -19,15 +19,17 @@ const PostSchema = mongoose.Schema({
   subCategory: {
     type: String,
   },
-  images: {
-    type: String,
-    validate: [validator.isURL, "Invalid image url!"],
-  },
+  images: [
+    {
+      type: String,
+      validate: [validator.isURL, "Invalid image url!"],
+    }
+  ],
   refByEmail: {
     type: String,
     required: [true, "User email is required!"],
     select: false,
-},
+  },
   createdAt: {
     type: Date,
     default: Date.now(),
