@@ -1,11 +1,11 @@
-const { addProductService, getProductsService } = require("../services/product.service");
+const { addProductService, getProductsService, reportProductService } = require("../services/product.service");
 const uploader = require("../utils/uploader");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 
 // get all products controller
 module.exports.getProducts = catchAsync(async (req, res, next) => {
-    const {skip, searchText} = req.query;
+    const { skip, searchText } = req.query;
     const products = await getProductsService(skip, searchText);
 
     if (!products) {
@@ -71,3 +71,18 @@ module.exports.addProduct = async (req, res) => {
         });
     }
 };
+
+// report product controller
+module.exports.reportProduct = catchAsync(async (req, res, next) => {
+    const reportData = req.body;
+    const result = await reportProductService(reportData);
+
+    if (!result) {
+        return next(new AppError("Can't find any product", 404));
+    }
+
+    res.status(201).json({
+        success: true,
+        message: "Thanks for reporting.",
+    });
+});

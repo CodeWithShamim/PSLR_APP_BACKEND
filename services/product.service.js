@@ -1,4 +1,5 @@
 const Product = require("../models/Product");
+const Report = require("../models/Report");
 
 // add product 
 module.exports.addProductService = async (productData) => {
@@ -15,4 +16,9 @@ module.exports.getProductsService = async (skip = 0, searchText = "", limit = 10
     return await Product.find({})
         .limit(limit)
         .skip(skip)
+}
+
+// report a product 
+module.exports.reportProductService = async (reportData) => {
+    return await Report.create(reportData);
 }
