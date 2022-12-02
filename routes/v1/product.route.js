@@ -7,6 +7,7 @@ router.get("/", verifyToken, productController.getProducts);
 router.post("/addProduct", verifyToken, productController.addProduct);
 router.post("/uploadProductImage", verifyToken, productController.uploadProductImage);
 
+router.get("/getReports", productController.getReports);
 router.post("/report", verifyToken, productController.reportProduct);
 
 module.exports = router;

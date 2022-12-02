@@ -22,3 +22,9 @@ module.exports.getProductsService = async (skip = 0, searchText = "", limit = 10
 module.exports.reportProductService = async (reportData) => {
     return await Report.create(reportData);
 }
+
+// get reports product 
+module.exports.getReportsService = async () => {
+    return await Report.find({}).populate("productID");
+}
+
