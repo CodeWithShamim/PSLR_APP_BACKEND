@@ -10,16 +10,16 @@ class APIFeatures {
     excludedParams.forEach((el) => delete params[el]);
     let queryStr = JSON.stringify(params);
     queryStr = queryStr.replace(/\b(lte|lt|gte|gt)\b/g, (match) => `$${match}`);
-    const filterQuery = {
-      ...JSON.parse(queryStr),
-      $text: { $search: this.queryString.keyword } ,
-    };
+    const filterQuery = JSON.parse(queryStr);
+    if(this.queryString.keyword){
+      filterQuery.$text = { $search: this.queryString.keyword };
+    }
     this.query.find(filterQuery);
     return this;
   }
 
   sort() {
-    let sort = "-createdAt";
+    let sort = "-created_at";
     if (this.queryString.sort) {
       sort = this.queryString.sort.split(",").join(" ");
     }

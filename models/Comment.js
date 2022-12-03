@@ -7,24 +7,24 @@ const CommentSchema = mongoose.Schema(
             type: String,
             required: [true, "Comment is required!"],
         },
-        imageUrl: {
+        image_url: [{
             type: String,
-            required: [true, "User url is required."],
+            required: [true, "Image url is required."],
             validate: [validator.isURL, "Not a valid url!"],
-        },
+        }],
         name: {
             type: String,
             required: [true, "Username is required!"],
         },
-        userId: {
+        user_id: {
             type: String,
             required: [true, "User ID is required!"],
         },
-        postId: {
+        post_id: {
             type: String,
             required: [true, "Post ID is required!"],
         },
-        createdAt: {
+        created_at: {
             type: Date,
             default: Date.now(),
             select: false,
