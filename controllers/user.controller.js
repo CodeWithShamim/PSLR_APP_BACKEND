@@ -194,12 +194,21 @@ module.exports.forgotPassword = async (req, res) => {
     try {
         const { email } = req.body;
 
+        
+        if (!validator.isEmail(email)) {
+            return res.status(403).json({
+                success: false,
+                error: "Please provide a valid Email.",
+            });
+        };
+
         if (!email) {
-            return res.status(401).json({
+            return res.status(403).json({
                 success: false,
                 error: "Please provide your Email",
             });
         }
+
 
         const user = await findUserByEmail(email);
 
@@ -235,6 +244,7 @@ module.exports.forgotPassword = async (req, res) => {
             message: "Successfully verify code send. Check your email address"
         });
     } catch (error) {
+        console.log(error)
         res.status(500).json({
             success: false,
             error: error.message,

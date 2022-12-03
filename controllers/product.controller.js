@@ -85,7 +85,7 @@ module.exports.uploadProductImage = async (req, res) => {
 module.exports.addProduct = async (req, res) => {
     try {
         const productData = req.body;
-        const result = await addProductService(productData);
+        const result = await addProductService({...productData, reference: req.user.email});
 
         res.status(200).json({
             success: true,

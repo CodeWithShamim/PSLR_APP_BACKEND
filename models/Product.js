@@ -40,6 +40,11 @@ const productSchema = mongoose.Schema(
             enum: ["pending", "active", "inactive", "discontinued"],
             default: "pending"
         },
+        reference: {
+            type: String,
+            required: [true, "User email is required!"],
+            select: false,
+        },
 
     }, { timestamps: true, });
 
