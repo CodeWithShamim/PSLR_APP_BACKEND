@@ -25,8 +25,11 @@ module.exports.removeComment = catchAsync(async (req, res,next) => {
  });
 
 // get all comments
-module.exports.getAllComments = catchAsync(async (req, res) => {
-    const features = new APIFeatures(Comment.find(), req.query)
+module.exports.getAllComments = catchAsync(async (req, res,next) => {
+  if (!req.query.post_id) {
+    return next(new AppError('Post id is not given!', 404));
+  }
+    const features = new APIFeatures(Comment.find({post_id:req.query.post_id}), req.query)
     .sort()
     .fieldLimiting()
     .paginate();
