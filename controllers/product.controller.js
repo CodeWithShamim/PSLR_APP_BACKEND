@@ -1,9 +1,8 @@
-const { addProductService, getProductsService } = require("../services/product.service");
+const { addProductService, getProductsService, getPendingProductsService, updateProductStatusService } = require("../services/product.service");
 const uploader = require("../utils/uploader");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 
-// get all products controller
 module.exports.getProducts = catchAsync(async (req, res, next) => {
     const { skip, searchText } = req.query;
     const products = await getProductsService(skip, searchText);
@@ -16,6 +15,36 @@ module.exports.getProducts = catchAsync(async (req, res, next) => {
         success: true,
         message: "All products successfully find",
         products,
+    });
+});
+
+// get all pending products controller
+module.exports.getPendingProduct = catchAsync(async (req, res, next) => {
+    const products = await getPendingProductsService();
+
+    if (!products) {
+        return next(new AppError("Can't find any product", 404));
+    }
+
+    res.status(201).json({
+        success: true,
+        message: "All pending products successfully find",
+        products,
+    });
+});
+
+
+// update Product Status controller
+module.exports.updateProductStatus = catchAsync(async (req, res, next) => {
+    const data = req.body;
+    const result = await updateProductStatusService(data);
+    if (!result) {
+        return next(new AppError("Can't Changed product status.", 403));
+    }
+
+    res.status(201).json({
+        success: true,
+        message: "Product status changed.",
     });
 });
 
