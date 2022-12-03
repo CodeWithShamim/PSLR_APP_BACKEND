@@ -3,8 +3,10 @@ const router = express.Router();
 const commentController = require("../../controllers/comment.controller");
 const verifyToken = require("../../middleware/verifyToken");
 
-router.get("/", verifyToken, commentController.getAllComments);
-router.post("/addComment", verifyToken, commentController.addComment);
-router.delete("/:id", verifyToken, commentController.removeComment);
+router.use(verifyToken)
+
+router.get("/", commentController.getAllComments);
+router.post("/addComment", commentController.addComment);
+router.delete("/:id", commentController.removeComment);
 
 module.exports = router;
