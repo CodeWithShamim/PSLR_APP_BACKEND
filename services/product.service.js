@@ -25,3 +25,7 @@ module.exports.updateProductStatusService = async (data) => {
         runValidators: true,
     })
 }
+
+module.exports.getMyProductService = async (email) => {
+    return await Product.find({ reference: email })
+}

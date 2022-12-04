@@ -1,4 +1,10 @@
-const { addProductService, getProductsService, getPendingProductsService, updateProductStatusService } = require("../services/product.service");
+const {
+    addProductService,
+    getProductsService,
+    getPendingProductsService,
+    updateProductStatusService,
+    getMyProductService
+} = require("../services/product.service");
 const uploader = require("../utils/uploader");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
@@ -85,7 +91,7 @@ module.exports.uploadProductImage = async (req, res) => {
 module.exports.addProduct = async (req, res) => {
     try {
         const productData = req.body;
-        const result = await addProductService({...productData, reference: req.user.email});
+        const result = await addProductService({ ...productData, reference: req.user.email });
 
         res.status(200).json({
             success: true,
@@ -100,3 +106,17 @@ module.exports.addProduct = async (req, res) => {
         });
     }
 };
+
+module.exports.getMyProduct = catchAsync(async (req, res, next) => {
+    const products = await getMyProductService(req.user.email);
+
+    if (!products) {
+        return next(new AppError("Can't find any product", 404));
+    }
+
+    res.status(201).json({
+        success: true,
+        message: "All my products successfully find",
+        products,
+    });
+});

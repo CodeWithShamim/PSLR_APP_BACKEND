@@ -7,6 +7,7 @@ const verifyToken = require("../../middleware/verifyToken");
 router.use(verifyToken)
 
 router.get("/", productController.getProducts);
+router.get("/getMyProduct", productController.getMyProduct);
 router.get("/getPendingProduct", authorization("admin"), productController.getPendingProduct);
 router.post("/updateProductStatus", authorization("admin"), productController.updateProductStatus);
 
