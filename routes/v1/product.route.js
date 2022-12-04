@@ -9,6 +9,7 @@ router.use(verifyToken)
 router.get("/", productController.getProducts);
 router.get("/getMyProduct", productController.getMyProduct);
 router.get("/getPendingProduct", authorization("admin"), productController.getPendingProduct);
+router.post("/updateProduct", productController.updateProduct);
 router.post("/updateProductStatus", authorization("admin"), productController.updateProductStatus);
 
 router.post("/addProduct", productController.addProduct);

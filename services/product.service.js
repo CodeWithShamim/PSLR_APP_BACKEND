@@ -26,6 +26,24 @@ module.exports.updateProductStatusService = async (data) => {
     })
 }
 
+module.exports.updateProductService = async (data) => {
+    return await Product.findByIdAndUpdate(data.id, {
+        images: data.images,
+        title: data.title,
+        price: data.price,
+        description: data.description,
+        location: data.location,
+        productUsesDate: data.productUsesDate,
+        condition: data.condition,
+        status: data.status,
+        reference: data.email,
+    },
+        {
+            runValidators: true,
+            new: true,
+        })
+}
+
 module.exports.getMyProductService = async (email) => {
     return await Product.find({ reference: email })
 }

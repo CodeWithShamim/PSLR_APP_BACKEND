@@ -3,7 +3,8 @@ const {
     getProductsService,
     getPendingProductsService,
     updateProductStatusService,
-    getMyProductService
+    getMyProductService,
+    updateProductService
 } = require("../services/product.service");
 const uploader = require("../utils/uploader");
 const AppError = require("../utils/appError");
@@ -51,6 +52,21 @@ module.exports.updateProductStatus = catchAsync(async (req, res, next) => {
     res.status(201).json({
         success: true,
         message: "Product status changed.",
+    });
+});
+
+
+// update Product controller
+module.exports.updateProduct = catchAsync(async (req, res, next) => {
+    const data = req.body;
+    const result = await updateProductService({ ...data, reference: req.user.email });
+    if (!result) {
+        return next(new AppError("Can't producted this product info.", 403));
+    }
+
+    res.status(201).json({
+        success: true,
+        message: "Successfully product updated.",
     });
 });
 
