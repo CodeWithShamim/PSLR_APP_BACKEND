@@ -45,5 +45,5 @@ module.exports.updateProductService = async (data) => {
 }
 
 module.exports.getMyProductService = async (email) => {
-    return await Product.find({ reference: email })
+    return await Product.find({ reference: email }).limit(10)
 }

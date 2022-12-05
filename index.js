@@ -16,6 +16,7 @@ const colors = require("colors");
 const database = require("./utils/database");
 const userRoute = require("./routes/v1/user.route");
 const productRoute = require("./routes/v1/product.route");
+const shippingRoute = require("./routes/v1/shipping.route");
 const reportRoute = require("./routes/v1/report.route");
 const productLinkRoute = require("./routes/v1/productLink.route");
 const lapRoute = require("./routes/v1/lap.route");
@@ -42,6 +43,7 @@ app.get("/", (req, res) => {
 // route
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/product", productRoute);
+app.use("/api/v1/shipping", shippingRoute);
 app.use("/api/v1/report", reportRoute);
 app.use("/api/v1/wishlist", productLinkRoute);
 app.use("/api/v1/lap", lapRoute);
