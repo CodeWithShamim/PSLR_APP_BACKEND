@@ -1,4 +1,4 @@
-const { addEventService } = require("../services/event.service");
+const { addEventService, getEventsService } = require("../services/event.service");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 
@@ -19,13 +19,14 @@ module.exports.addEvent = catchAsync(async (req, res, next) => {
 
 // get events controller
 module.exports.getEvents = catchAsync(async (req, res, next) => {
-    const result = await getEventsService();
-    if (!result) {
+    const events = await getEventsService();
+    if (!events) {
         return next(new AppError("Can't find any event", 500));
     }
 
     res.status(201).json({
         success: true,
         message: "Successfully event find.",
+        events
     });
 });
