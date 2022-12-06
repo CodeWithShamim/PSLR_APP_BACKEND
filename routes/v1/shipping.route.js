@@ -7,7 +7,7 @@ const verifyToken = require("../../middleware/verifyToken");
 router.use(verifyToken)
 
 router.get("/", authorization("admin"), shippingController.getShipping);
-router.post("/addShipping", shippingController.addShipping)
-router.post("/updateShippingStatus", authorization("admin"), shippingController.updateShippingStatus)
+router.post("/addShipping", shippingController.addShipping);
+router.post("/updateShippingStatus", authorization("admin"), shippingController.updateShippingStatus);
 
 module.exports = router;
