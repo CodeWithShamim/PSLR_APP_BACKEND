@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 
 const lapSchema = mongoose.Schema({
+    username: {
+        type: String,
+        required: [true, "Username is required."],
+    },
     sim: {
         type: String,
         required: [true, "Sim info is required."],
