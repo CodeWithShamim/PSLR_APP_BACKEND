@@ -30,6 +30,7 @@ module.exports.updateProductService = async (data) => {
     return await Product.findByIdAndUpdate(data.id, {
         images: data.images,
         title: data.title,
+        categories: data.categories,
         price: data.price,
         description: data.description,
         location: data.location,

@@ -40,6 +40,12 @@ const productSchema = mongoose.Schema(
             enum: ["pending", "active", "inactive", "discontinued"],
             default: "pending"
         },
+        categories: [{
+            name: {
+                type: String,
+                required: [true, "Category name is required."]
+            }
+        }],
         reference: {
             type: String,
             required: [true, "User email is required!"],
