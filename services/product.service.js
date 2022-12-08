@@ -1,5 +1,4 @@
 const Product = require("../models/Product");
-const Report = require("../models/Report");
 
 module.exports.addProductService = async (productData) => {
     return await Product.create(productData);
@@ -7,7 +6,7 @@ module.exports.addProductService = async (productData) => {
 
 module.exports.getProductsService = async (skip = 0, searchText = "", limit = 10,) => {
     if (searchText) {
-        return await Product.find({ $text: { $search: searchText } })
+        return await Product.find({ title: { $regex: `/*${searchText}/*`, $options: 'i' } })
             .limit(limit)
             .skip(skip)
     }

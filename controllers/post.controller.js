@@ -51,9 +51,12 @@ module.exports.getAllPosts = catchAsync(async (req, res) => {
     posts,
   });
 });
-// get all Posts
+// get my Posts
 module.exports.getMyPosts = catchAsync(async (req, res) => {
   const posts = await Post.find({ refByEmail: req.user.email });
+  if (!posts) {
+    return next(new AppError("My post can't find.", 403));
+}
   res.status(200).json({
     success: true,
     length: posts.length,
