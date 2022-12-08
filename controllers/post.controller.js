@@ -38,13 +38,21 @@ module.exports.removePost = catchAsync(async (req, res, next) => {
 
 // get all Posts
 module.exports.getAllPosts = catchAsync(async (req, res) => {
-  const features = new APIFeatures(Post.find(), req.query)
+  const { category, subCategory } = req.query;
+
+  const features = new APIFeatures(Post.find({
+    $or: [
+      { category: { $in: category } },
+      { subCategory: { $in: subCategory } },
+    ]
+  }), req.query)
     .filter()
     .sort()
     .fieldLimiting()
     .paginate();
 
   const posts = await features.query;
+
   res.status(200).json({
     success: true,
     length: posts.length,
@@ -56,7 +64,7 @@ module.exports.getMyPosts = catchAsync(async (req, res) => {
   const posts = await Post.find({ refByEmail: req.user.email });
   if (!posts) {
     return next(new AppError("My post can't find.", 403));
-}
+  }
   res.status(200).json({
     success: true,
     length: posts.length,

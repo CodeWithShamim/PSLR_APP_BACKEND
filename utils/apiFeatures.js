@@ -12,7 +12,7 @@ class APIFeatures {
     queryStr = queryStr.replace(/\b(lte|lt|gte|gt)\b/g, (match) => `$${match}`);
     const filterQuery = JSON.parse(queryStr);
     if(this.queryString.keyword){
-      filterQuery.$text = { $search: this.queryString.keyword };
+      filterQuery.title = { $regex: `/*${this.queryString.keyword}/*`, $options: 'i' };
     }
     this.query.find(filterQuery);
     return this;
