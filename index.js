@@ -27,6 +27,7 @@ const conversationRoute = require("./routes/v1/conversation.route");
 const messageRoute = require("./routes/v1/message.route");
 const errorHandler = require("./middleware/errorHandler");
 const errorController = require("./controllers/error.controller");
+const socket = require("./socket");
 
 // middlewares 
 app.use(express.json());
@@ -40,7 +41,7 @@ app.use(
 database();
 
 app.get("/", (req, res) => {
-    res.send("Route is working! YaY!");
+    res.send("Route working...");
 })
 
 // route
@@ -56,29 +57,15 @@ app.use("/api/v1/comments", commentRoute);
 app.use("/api/v1/conversation", conversationRoute);
 app.use("/api/v1/message", messageRoute);
 
-io.on('connection', (socket) => {
-    console.log('User connected');
-    socket.on('disconnect', () => {
-        console.log('user disconnected');
-    });
-    socket.on(("message"), msg => {
-        console.log(msg);
-        io.emit("message", msg)
-    })
-});
+// connect socket 
+socket(io);
 
 // server
 server.listen(port, () => {
     console.log(`Server is running on port ${port}`.yellow.bold);
 });
 
-// globaly error handler 
-// app.use(errorHandler);
 app.use(errorController);
-
 process.on("unhandledRejection", (error) => {
     console.log("Global error, ", error.name, error.message);
-    // app.close(() => {
-    //     process.exit(1);
-    // });
 });
