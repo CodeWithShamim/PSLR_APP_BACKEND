@@ -24,6 +24,7 @@ const lapRoute = require("./routes/v1/lap.route");
 const postRoute = require("./routes/v1/post.route");
 const commentRoute = require("./routes/v1/comment.route");
 const conversationRoute = require("./routes/v1/conversation.route");
+const messageRoute = require("./routes/v1/message.route");
 const errorHandler = require("./middleware/errorHandler");
 const errorController = require("./controllers/error.controller");
 
@@ -52,8 +53,8 @@ app.use("/api/v1/wishlist", productLinkRoute);
 app.use("/api/v1/lap", lapRoute);
 app.use("/api/v1/posts", postRoute);
 app.use("/api/v1/comments", commentRoute);
-
 app.use("/api/v1/conversation", conversationRoute);
+app.use("/api/v1/message", messageRoute);
 
 io.on('connection', (socket) => {
     console.log('User connected');
