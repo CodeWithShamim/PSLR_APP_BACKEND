@@ -24,7 +24,7 @@ module.exports.addConversation = catchAsync(async (req, res, next) => {
 
 // get all conversations controller
 module.exports.getConversations = catchAsync(async (req, res, next) => {
-    const conversations= await Conversation.find({});
+    const conversations= await Conversation.find({senderId: req.params.id}).populate("senderId receiverId");
     if (!conversations) {
         return next(new AppError("Can't find conversation.", 500));
     }
