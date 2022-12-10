@@ -9,11 +9,11 @@ module.exports.addConversation = catchAsync(async (req, res, next) => {
 
     if (isExits.length === 0) {
         await Conversation.create(conversationData);
-    }else{
-       return res.status(201).json({
+    } else {
+        return res.status(201).json({
             success: false,
             message: "Conversation already exits.",
-        }); 
+        });
     }
 
     res.status(201).json({
@@ -24,7 +24,7 @@ module.exports.addConversation = catchAsync(async (req, res, next) => {
 
 // get all conversations controller
 module.exports.getConversations = catchAsync(async (req, res, next) => {
-    const conversations= await Conversation.find({senderId: req.params.id}).populate("senderId receiverId");
+    const conversations = await Conversation.find({ $in: [req.params.id] }).populate("senderId receiverId");
     if (!conversations) {
         return next(new AppError("Can't find conversation.", 500));
     }
