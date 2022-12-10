@@ -1,5 +1,4 @@
 const Conversation = require("../models/Conversation");
-const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 
 // add conversation controller
@@ -24,10 +23,10 @@ module.exports.addConversation = catchAsync(async (req, res, next) => {
 
 // get all conversations controller
 module.exports.getConversations = catchAsync(async (req, res, next) => {
-    const conversations = await Conversation.find({ $in: [req.params.id] }).populate("senderId receiverId");
-    if (!conversations) {
-        return next(new AppError("Can't find conversation.", 500));
-    }
+    let conversations = []
+    conversations = await Conversation.find({ senderId: req.params.id }).populate("senderId receiverId");
+    const checkReceiver = await Conversation.find({ receiverId: req.params.id }).populate("senderId receiverId");
+    if (checkReceiver.length !== 0) conversations.push(checkReceiver);
 
     res.status(201).json({
         success: true,
