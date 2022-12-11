@@ -1,19 +1,11 @@
 const Conversation = require("../models/Conversation");
 const catchAsync = require("../utils/catchAsync");
 
-// add conversation controller
+// new conversation add controller
 module.exports.addConversation = catchAsync(async (req, res, next) => {
-    const conversationData = req.body;
-    const isExits = await Conversation.find(conversationData)
+    const { senderId, receiverId } = req.body;
 
-    if (isExits.length === 0) {
-        await Conversation.create(conversationData);
-    } else {
-        return res.status(201).json({
-            success: false,
-            message: "Conversation already exits.",
-        });
-    }
+    await Conversation.create({ members: [senderId, receiverId] });
 
     res.status(201).json({
         success: true,
@@ -21,16 +13,28 @@ module.exports.addConversation = catchAsync(async (req, res, next) => {
     });
 });
 
-// get all conversations controller
-module.exports.getConversations = catchAsync(async (req, res, next) => {
-    let conversations = []
-    conversations = await Conversation.find({ senderId: req.params.id }).populate("senderId receiverId");
-    const checkReceiver = await Conversation.find({ receiverId: req.params.id }).populate("senderId receiverId");
-    if (checkReceiver.length !== 0) conversations.push(checkReceiver);
+//get conv of a user controller
+module.exports.getConvByUser = catchAsync(async (req, res, next) => {
+    const conversations = await Conversation.find({
+        members: { $in: [req.params.userId] },
+    });
 
     res.status(201).json({
         success: true,
-        message: "Successfully conversation find.",
+        message: "Successfully conversation find for a user.",
+        conversations,
+    });
+});
+
+
+// get conv includes two userId controller
+module.exports.getConvByTwoUser = catchAsync(async (req, res, next) => {
+    const { firstUserId, secondUserId } = req.params;
+    const conversations = await Conversation.find({ members: { $all: [firstUserId, secondUserId] } })
+
+    res.status(201).json({
+        success: true,
+        message: "Successfully conversation find for include two user.",
         conversations,
     });
 });

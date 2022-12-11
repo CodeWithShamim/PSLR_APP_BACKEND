@@ -23,11 +23,7 @@ const socket = (io) => {
 
         // send message 
         socket.on("sendMessage", data => {
-            let user;
-
-            user = getUser(data.senderId)
-            io.to(user?.socketId).emit("getMessage", data)
-            user = getUser(data.receiverId)
+            const user = getUser(data.conversationId)
             if (user?.socketId) io.to(user.socketId).emit("getMessage", data)
         })
 

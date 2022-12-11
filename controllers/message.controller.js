@@ -1,25 +1,21 @@
 const Message = require("../models/Message");
-const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 
 // add message controller
 module.exports.addMessage = catchAsync(async (req, res, next) => {
-    const messageData = req.body;
-    await Message.create(messageData)
+    const newMessage = new Message(req.body);
+    const savedMessage = await newMessage.save();
 
     res.status(201).json({
         success: true,
         message: "Successfully message added.",
+        savedMessage,
     });
 });
 
 // get message controller
 module.exports.getMessage = catchAsync(async (req, res, next) => {
-    if (!req.query.senderId || !req.query.receiverId) {
-        return next(new AppError("Info can't find.", 500));
-    }
-
-    const messages = await Message.find(req.query);
+    const messages = await Message.find({ conversationId: req.params.conversationId });
     res.status(201).json({
         success: true,
         message: "Successfully message find.",

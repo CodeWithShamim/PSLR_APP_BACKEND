@@ -9,6 +9,7 @@ router.post("/uploadImage", verifyToken, userController.uploadImage);
 router.post("/updateProfile", verifyToken, userController.updateProfile);
 
 router.get("/getMe", verifyToken, userController.getMe);
+router.get("/:id", verifyToken, userController.getUser);
 
 router.post("/forgotPassword", userController.forgotPassword);
 router.post("/updatePassword", userController.updatePassword);

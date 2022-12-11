@@ -5,16 +5,16 @@ const messageSchema = mongoose.Schema(
     {
         senderId: {
             type: ObjectId,
-            required: [true, "SenderId is required."],
+            required: [true, "senderId is required."],
             ref: "User"
         },
         text: {
             type: String,
             required: [true, "Message text is required."],
         },
-        receiverId: {
+        conversationId: {
             type: ObjectId,
-            required: [true, "ReceiverId is required."],
+            required: [true, "conversationId is required."],
             ref: "User"
         },
     }, { timestamps: true });

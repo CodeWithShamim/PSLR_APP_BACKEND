@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const { generateToken } = require("../utils/token");
 const validator = require("validator");
 const uploader = require("../utils/uploader");
+const User = require("../models/User");
 
 // sign up controller 
 module.exports.signup = async (req, res) => {
@@ -172,6 +173,26 @@ module.exports.updateProfile = async (req, res) => {
 module.exports.getMe = async (req, res) => {
     try {
         const user = await findUserByEmail(req.user?.email);
+
+        // password retrive form user data 
+        const { password: pwd, ...others } = user.toObject();
+
+        res.status(200).json({
+            success: true,
+            user: others,
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: error.message,
+        });
+    }
+};
+
+// get user controller 
+module.exports.getUser = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
 
         // password retrive form user data 
         const { password: pwd, ...others } = user.toObject();
