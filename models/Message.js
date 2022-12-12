@@ -8,6 +8,11 @@ const messageSchema = mongoose.Schema(
             required: [true, "senderId is required."],
             ref: "User"
         },
+        receiverId: {
+            type: ObjectId,
+            required: [true, "receiverId is required."],
+            ref: "User"
+        },
         text: {
             type: String,
             required: [true, "Message text is required."],
