@@ -13,9 +13,11 @@ const messageSchema = mongoose.Schema(
             required: [true, "receiverId is required."],
             ref: "User"
         },
+        image: {
+            type: String
+        },
         text: {
             type: String,
-            required: [true, "Message text is required."],
         },
         conversationId: {
             type: ObjectId,
