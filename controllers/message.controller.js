@@ -15,13 +15,8 @@ module.exports.addMessage = catchAsync(async (req, res, next) => {
 
 // get message controller
 module.exports.getMessage = catchAsync(async (req, res, next) => {
-    const {senderId, conversationId} = req.params;
+    const messages = await Message.find({conversationId: req.params.conversationId});
 
-    let messages = []
-     messages = await Message.find({senderId, conversationId });
-     const newMessages = await Message.find({conversationId, senderId });
-     messages.push(newMessages);
-    
     res.status(201).json({
         success: true,
         message: "Successfully message find.",
