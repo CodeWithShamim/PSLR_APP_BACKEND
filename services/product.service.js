@@ -6,11 +6,11 @@ module.exports.addProductService = async (productData) => {
 
 module.exports.getProductsService = async (skip = 0, searchText = "", limit = 10,) => {
     if (searchText) {
-        return await Product.find({ title: { $regex: `/*${searchText}/*`, $options: 'i' } })
+        return await Product.find({status: "active", title: { $regex: `/*${searchText}/*`, $options: 'i' } })
             .limit(limit)
             .skip(skip)
     }
-    return await Product.find({})
+    return await Product.find({status: "active"})
         .limit(limit)
         .skip(skip)
 }
