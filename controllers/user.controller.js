@@ -209,13 +209,29 @@ module.exports.getUser = async (req, res) => {
     }
 };
 
+// get admin id controller 
+module.exports.getAdminId = async (req, res) => {
+    try {
+        const adminId = await User.findOne({ role: "admin" }).select("_id")
+        res.status(200).json({
+            success: true,
+            id: adminId._id,
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: error.message,
+        });
+    }
+};
+
 
 // forgot password controller
 module.exports.forgotPassword = async (req, res) => {
     try {
         const { email } = req.body;
 
-        
+
         if (!validator.isEmail(email)) {
             return res.status(403).json({
                 success: false,
