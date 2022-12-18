@@ -24,6 +24,11 @@ const PostSchema = mongoose.Schema({
       type: String,
     }
   ],
+  status: {
+    type: String,
+    enum: ["pending", "accept", "reject",],
+    default: "pending"
+  },
   refByEmail: {
     type: String,
     required: [true, "User email is required!"],

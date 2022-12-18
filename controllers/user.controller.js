@@ -210,12 +210,12 @@ module.exports.getUser = async (req, res) => {
 };
 
 // get admin id controller 
-module.exports.getAdminId = async (req, res) => {
+module.exports.getAdminInfo = async (req, res) => {
     try {
-        const adminId = await User.findOne({ role: "admin" }).select("_id")
+        const adminInfo = await User.findOne({ role: "admin" })
         res.status(200).json({
             success: true,
-            id: adminId._id,
+            adminInfo,
         });
     } catch (error) {
         res.status(500).json({
