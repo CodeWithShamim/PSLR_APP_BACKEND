@@ -22,7 +22,6 @@ const PostSchema = mongoose.Schema({
   images: [
     {
       type: String,
-      validate: [validator.isURL, "Invalid image url!"],
     }
   ],
   refByEmail: {
