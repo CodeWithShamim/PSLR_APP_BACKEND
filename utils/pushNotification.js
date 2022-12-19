@@ -5,12 +5,18 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
 
-module.exports = async (notification, to = "all") => {
-  let tokens = [to];
-  if (to === "all") {
-    const users = await User.find();
-    tokens = users.map((user) => user?.fcm_token);
+module.exports = async (notification, ref = "all") => {
+  let users;
+  if (ref === "all") {
+    users = await User.find();
+  } else {
+    if (ref.ref_type == "id") {
+      users = await User.findById(ref.ref);
+    } else {
+      users = await User.find({ reference: ref.ref });
+    }
   }
+  const tokens = users.map((user) => user?.fcm_token);
   const message = {
     notification,
     tokens,

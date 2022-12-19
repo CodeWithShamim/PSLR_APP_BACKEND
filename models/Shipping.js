@@ -39,7 +39,6 @@ const shippingSchema = mongoose.Schema(
         reference: {
             type: String,
             required: [true, "User email is required!"],
-            select: false,
         },
 
     }, { timestamps: true, });
