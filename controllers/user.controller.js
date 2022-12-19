@@ -5,6 +5,7 @@ const { generateToken } = require("../utils/token");
 const validator = require("validator");
 const uploader = require("../utils/uploader");
 const User = require("../models/User");
+const catchAsync = require("../utils/catchAsync");
 
 // sign up controller 
 module.exports.signup = async (req, res) => {
@@ -102,6 +103,19 @@ module.exports.login = async (req, res) => {
         });
     }
 };
+
+// add fcm token 
+module.exports.addFcmToken = catchAsync(async (req, res, next) => {
+    const data = req.body;
+    await User.findByIdAndUpdate(data._id, data, {
+        new: true,
+        runValidators: true,
+      })
+    res.status(201).json({
+        success: true,
+        message: "FCM Token successfully added!",
+    });
+});
 
 // upload image controller 
 module.exports.uploadImage = async (req, res) => {

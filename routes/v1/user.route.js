@@ -5,6 +5,7 @@ const router = express.Router();
 
 router.post("/signup", userController.signup);
 router.post("/login", userController.login);
+router.patch("/addFcmToken", userController.addFcmToken);
 router.post("/uploadImage", verifyToken, userController.uploadImage);
 router.post("/updateProfile", verifyToken, userController.updateProfile);
 

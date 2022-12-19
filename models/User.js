@@ -40,6 +40,7 @@ const userSchema = mongoose.Schema(
             default: "user"
         },
         bio: String,
+        fcm_token: String,
         description: String,
         profilePicture: {
             type: String,
