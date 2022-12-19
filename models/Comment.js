@@ -7,11 +7,11 @@ const CommentSchema = mongoose.Schema(
             type: String,
             required: [true, "Comment is required!"],
         },
-        image_url: [{
+        image_url: {
             type: String,
             required: [true, "Image url is required."],
             validate: [validator.isURL, "Not a valid url!"],
-        }],
+        },
         name: {
             type: String,
             required: [true, "Username is required!"],
