@@ -16,7 +16,7 @@ module.exports = async (notification, ref = "all") => {
       users = await User.find({ reference: ref.ref });
     }
   }
-  const tokens = users.map((user) => user?.fcm_token);
+  const tokens = users.map((user) => user?.fcm_token).filter(Boolean);
   const message = {
     notification,
     tokens,
