@@ -6,6 +6,7 @@ const verifyToken = require("../../middleware/verifyToken");
 router.use(verifyToken)
 
 router.get("/", postController.getAllPosts);
+router.get("/status", postController.getPostByStatus);
 router.get("/me", postController.getMyPosts);
 router.post("/uploadPostImage", postController.uploadPostImage);
 router.post("/addPost", postController.addPost);

@@ -41,6 +41,7 @@ module.exports.getAllPosts = catchAsync(async (req, res) => {
   const { category, subCategory } = req.query;
 
   const features = new APIFeatures(Post.find({
+    status: "accept",
     $or: [
       { category: { $in: category } },
       { subCategory: { $in: subCategory } },
@@ -56,6 +57,14 @@ module.exports.getAllPosts = catchAsync(async (req, res) => {
   res.status(200).json({
     success: true,
     length: posts.length,
+    posts,
+  });
+});
+// get pending Posts
+module.exports.getPostByStatus = catchAsync(async (req, res) => {
+  const posts = await Post.find({ status: req.query.status })
+  res.status(200).json({
+    success: true,
     posts,
   });
 });

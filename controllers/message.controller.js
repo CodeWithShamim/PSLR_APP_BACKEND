@@ -29,7 +29,7 @@ module.exports.addMultipleMessage = catchAsync(async (req, res, next) => {
                 await Message.create({
                     senderId: adminId,
                     text: req.body.message,
-                    // image: ,
+                    image: req.body.image,
                     receiverId: users[i]._id,
                     conversationId: isConversationExit[0]._id,
                     createdAt: Date.now(),
@@ -44,7 +44,7 @@ module.exports.addMultipleMessage = catchAsync(async (req, res, next) => {
                 savedConversation && await Message.create({
                     senderId: adminId,
                     text: req.body.message,
-                    // image: ,
+                    image: req.body.image,
                     receiverId: users[i]._id,
                     conversationId: savedConversation._id,
                     createdAt: Date.now(),
