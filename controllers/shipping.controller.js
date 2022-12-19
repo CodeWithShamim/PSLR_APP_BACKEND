@@ -1,5 +1,6 @@
 const Shipping = require("../models/Shipping");
 const catchAsync = require("../utils/catchAsync");
+const pushNotification = require("../utils/pushNotification");
 
 // request shipping controller 
 module.exports.addShipping = catchAsync(async (req, res, next) => {
@@ -30,9 +31,13 @@ module.exports.updateShippingStatus = catchAsync(async (req, res, next) => {
     if (!result) {
         return next(new AppError("Can't Changed shipping status.", 403));
     }
-
     res.status(201).json({
         success: true,
         message: "Shipping status changed.",
     });
+    const notification = {
+        title:"Pit Lane Sim Racing sent you a new shipping quote!",
+        body:req.body.description,
+    }
+    pushNotification(notification,{ref_type:'email',ref:result.reference})
 });
