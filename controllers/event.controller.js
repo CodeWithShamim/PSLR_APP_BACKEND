@@ -1,6 +1,7 @@
 const { addEventService, getEventsService } = require("../services/event.service");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
+const pushNotification = require("../utils/pushNotification");
 
 // add event controller
 module.exports.addEvent = catchAsync(async (req, res, next) => {
@@ -14,6 +15,12 @@ module.exports.addEvent = catchAsync(async (req, res, next) => {
         success: true,
         message: "Successfully added this event.",
     });
+    const notification = {
+        title:"Pit Lane Sim Racing just posted a new event!",
+        body:req.body.title,
+        imageUrl:req.body.image,
+    }
+    pushNotification(notification)
 });
 
 
