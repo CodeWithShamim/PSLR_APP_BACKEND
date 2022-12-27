@@ -9,6 +9,8 @@ const {
 const uploader = require("../utils/uploader");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
+const Product = require("../models/Product");
+const Report = require("../models/Report");
 
 module.exports.getProducts = catchAsync(async (req, res, next) => {
     const { skip, searchText } = req.query;
@@ -134,5 +136,17 @@ module.exports.getMyProduct = catchAsync(async (req, res, next) => {
         success: true,
         message: "All my products successfully find",
         products,
+    });
+});
+
+module.exports.removeProduct = catchAsync(async (req, res, next) => {
+    const id = req.params.id;
+    const result = await Product.findByIdAndDelete(id)
+    if (!result) return next(new AppError("Can't delete this product", 404));
+    await Report.deleteMany({ productID: id })
+
+    res.status(201).json({
+        success: true,
+        message: "Successfully deleted this product.",
     });
 });
