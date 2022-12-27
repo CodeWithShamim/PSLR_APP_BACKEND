@@ -5,11 +5,13 @@ const catchAsync = require("../utils/catchAsync");
 module.exports.addConversation = catchAsync(async (req, res, next) => {
     const { senderId, receiverId } = req.body;
 
-    await Conversation.create({ members: [senderId, receiverId] });
+    const coversation = new Conversation({ members: [senderId, receiverId] })
+    const savedConversation = await coversation.save();
 
     res.status(201).json({
         success: true,
         message: "Successfully conversation added.",
+        conversations: savedConversation,
     });
 });
 

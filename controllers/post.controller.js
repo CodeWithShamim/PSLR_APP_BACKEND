@@ -26,7 +26,8 @@ module.exports.updatePost = catchAsync(async (req, res, next) => {
 
 // remove Post
 module.exports.removePost = catchAsync(async (req, res, next) => {
-  const post = await Post.findByIdAndDelete(req.params.id);
+  console.log(req.params.id);
+  const post = await Post.findByIdAndDelete(req.params.id.trim());
   if (!post) {
     return next(new AppError("This post is not found in the database!", 404));
   }
@@ -46,7 +47,7 @@ module.exports.getAllPosts = catchAsync(async (req, res) => {
       { category: { $in: category } },
       { subCategory: { $in: subCategory } },
     ]
-  }), req.query)
+  }).populate("refById"), req.query)
     .filter()
     .sort()
     .fieldLimiting()
@@ -70,7 +71,7 @@ module.exports.getPostByStatus = catchAsync(async (req, res) => {
 });
 // get my Posts
 module.exports.getMyPosts = catchAsync(async (req, res) => {
-  const posts = await Post.find({ refByEmail: req.user.email });
+  const posts = await Post.find({ refById: req.params.id });
   if (!posts) {
     return next(new AppError("My post can't find.", 403));
   }

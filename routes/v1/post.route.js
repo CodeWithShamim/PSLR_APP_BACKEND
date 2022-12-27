@@ -7,7 +7,7 @@ router.use(verifyToken)
 
 router.get("/", postController.getAllPosts);
 router.get("/status", postController.getPostByStatus);
-router.get("/me", postController.getMyPosts);
+router.get("/me/:id", postController.getMyPosts);
 router.post("/uploadPostImage", postController.uploadPostImage);
 router.post("/addPost", postController.addPost);
 router.get("/:id", postController.getPost);

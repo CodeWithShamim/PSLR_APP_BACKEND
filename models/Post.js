@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const ObjectId = mongoose.Types.ObjectId;
 
 const PostSchema = mongoose.Schema({
   title: {
@@ -29,15 +30,16 @@ const PostSchema = mongoose.Schema({
     enum: ["pending", "accept", "reject",],
     default: "pending"
   },
-  refByEmail: {
-    type: String,
-    required: [true, "User email is required!"],
-    select: false,
+  refById: {
+    type: ObjectId,
+    required: [true, "User id is required!"],
+    // select: false,
+    ref: "User"
   },
   createdAt: {
     type: Date,
     default: Date.now(),
-    select: false,
+    // select: false,
   },
 });
 
