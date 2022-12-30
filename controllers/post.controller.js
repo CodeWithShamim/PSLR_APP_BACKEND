@@ -63,6 +63,14 @@ module.exports.getAllPosts = catchAsync(async (req, res) => {
 });
 // get pending Posts
 module.exports.getPostByStatus = catchAsync(async (req, res) => {
+  if (req.query.status === "all") {
+    const posts = await Post.find({})
+    return res.status(200).json({
+      success: true,
+      posts,
+    });
+  }
+
   const posts = await Post.find({ status: req.query.status })
   res.status(200).json({
     success: true,

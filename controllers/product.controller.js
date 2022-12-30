@@ -1,7 +1,7 @@
 const {
     addProductService,
     getProductsService,
-    getPendingProductsService,
+    getProductsByStatusService,
     updateProductStatusService,
     getMyProductService,
     updateProductService
@@ -28,8 +28,8 @@ module.exports.getProducts = catchAsync(async (req, res, next) => {
 });
 
 // get all pending products controller
-module.exports.getPendingProduct = catchAsync(async (req, res, next) => {
-    const products = await getPendingProductsService();
+module.exports.getProductsByStatus = catchAsync(async (req, res, next) => {
+    const products = await getProductsByStatusService(req.params.status);
 
     if (!products) {
         return next(new AppError("Can't find any product", 404));

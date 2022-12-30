@@ -37,7 +37,7 @@ const productSchema = mongoose.Schema(
         }],
         status: {
             type: String,
-            enum: ["pending", "active", "inactive", "discontinued"],
+            enum: ["pending", "accept", "reject"],
             default: "pending"
         },
         categories: [{

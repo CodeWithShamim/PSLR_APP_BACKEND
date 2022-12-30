@@ -6,17 +6,20 @@ module.exports.addProductService = async (productData) => {
 
 module.exports.getProductsService = async (skip = 0, searchText = "", limit = 10,) => {
     if (searchText) {
-        return await Product.find({status: "active", title: { $regex: `/*${searchText}/*`, $options: 'i' } })
+        return await Product.find({status: "accept", title: { $regex: `/*${searchText}/*`, $options: 'i' } })
             .limit(limit)
             .skip(skip)
     }
-    return await Product.find({status: "active"})
+    return await Product.find({status: "accept"})
         .limit(limit)
         .skip(skip)
 }
 
-module.exports.getPendingProductsService = async () => {
-    return await Product.find({ status: "pending" }).limit(10)
+module.exports.getProductsByStatusService = async (status) => {
+    if(status === "all"){
+        return await Product.find({}).limit(20)
+    }
+    return await Product.find({ status: status}).limit(10)
 }
 
 module.exports.updateProductStatusService = async (data) => {
